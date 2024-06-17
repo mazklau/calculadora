@@ -1,0 +1,99 @@
+@charset "UTF-8";
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: transparent;
+}
+.corpo-tab{
+    width: 300px;
+    background-color: rgba(81, 83, 170, 0.557);
+    border: 3px  solid rgb(190, 187, 187);
+    border-radius: 20px;
+    box-shadow: 0px 4px 4px black;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+.result{ 
+    padding: 20px;
+    text-align: right;
+    background-color: transparent;
+    border: 1px solid white;
+    margin: 5px;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 2.5em;
+}
+
+.aria{
+    background-color: rgba(81, 82, 170, 0.116);
+    width: 295px;
+    height: 320px;
+    padding: 5px;
+    border-radius: 15px;
+    position: relative;
+    margin: auto;
+}
+.buttons{
+    display: grid;
+    padding-top: 9px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1px;
+    position: relative;
+    left: 8.5px;
+}
+
+.buttons button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10vh;
+    height: 60px;
+    color: #3e3d3d;
+    font-size: 1.5em;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+button{
+    display: flex;
+    padding: 5px;
+    border-radius: 50%;
+    
+}
+
+button:hover{
+    box-shadow: 1.5px solid rgb(40, 68, 98);
+    color: rgba(90, 94, 209, 0.822);
+    transition: .5 ease;
+}
+
+.buttons .button-zero{
+    width: 60%;
+    position: relative;
+    left: 25px;
+    
+}
+
+.button-zero{
+    width: 50px;
+    grid-column: span 2;
+}
+
+.bg-gray{
+    background-color: rgb(158, 145, 139);
+}
+
+.bg-orange{
+    background-color: rgba(65, 202, 220, 0.497);
+}

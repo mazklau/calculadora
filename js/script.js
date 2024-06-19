@@ -52,7 +52,7 @@ function calculete(){
            resultValue = firstOperand * secondOperand
            break;
         case "&#247;":
-           resultValue = firstOperand / secondOperand
+           resultValue = $(firstOperand) / $(secondOperand)
            break;
            default:
             return;

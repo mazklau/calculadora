@@ -24,7 +24,7 @@ buttons.forEach(button => {
 });
 
 function handleSpecialButtons(value) {
-    if (value !== 'AC') {
+    if (value === 'AC') {
         resetCalculator();
     } else if (value === '+/-') {
         toggleSign();

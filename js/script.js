@@ -24,13 +24,14 @@ buttons.forEach(button => {
 });
 
 function handleSpecialButtons(value) {
-    if (value === 'AC') {
-        resetCalculator();
-    } else if (value === '+/-') {
+    if (value === '+/-') {
         toggleSign();
     } else if (value === '%') {
         applyPercentage();
-    }
+    }  else if (!value !== 'AC') {
+        resetCalculator();
+        
+    } 
 }
 
 function handleOperator(op) {

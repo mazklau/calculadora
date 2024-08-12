@@ -1,113 +1,104 @@
-const result = document.querySelector(".result");
-const buttons = document.querySelectorAll(".buttons button");
+// Seleciona os elementos da calculadora
+const buttons = document.querySelectorAll('.buttons button');
+const result = document.querySelector('.result');
 
-let currentNumber = "";
-let firstOperand = null;
-let operator = null;
-let restart = false;
+let currentInput = '0';
+let operator = '';
+let previousInput = '';
+let shouldResetInput = false;
 
-function updateResult(originClear = false){
-    result.innerText = originClear ? 0 : currentNumber.replace(".",",");
-}
+buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        const value = button.textContent;
 
-function addDigit(digit) {
-    if (digit == "," && (currentNumber.includes(",") || !currentNumber))
-    return;
-
-    if (restart) {
-        currentNumber = digit;
-        restart = false;
-    }else{
-        currentNumber += digit;
-    }
-    updateResult();
-}
-
-function setOperator(newOperator){
-    if (currentNumber) {
-        calculete();
-
-        firstOperand = parseFloat(currentNumber.replace(",","."));
-        currentNumber = "";
-    }
-
-    operator = newOperator;
-}
-
-function calculete(){
-    if (operator === null || firstOperand === null) return;
-
-    let secondOperand = parseFloat(currentNumber.replace(",","."));
-
-    let resultValue;
-
-    switch (operator) {
-        case "+":
-            resultValue = firstOperand + secondOperand
-            break
-        case "-":
-            resultValue = firstOperand - secondOperand
-            break;
-        case "x":
-           resultValue = firstOperand * secondOperand
-           break;
-        case "&#247;":
-           resultValue = firstOperand) / secondOperand
-           break;
-           default:
-            return;
-    }
-    if (resultValue.toString().split(".")[1]?.length < 5) {
-        currentNumber = parseFloat(resultValue.toFixed(5)).toString();
-    } else {
-        currentNumber = resultValue.toString();
-    }
-    operator = null;
-    firstOperand = null;
-    restart = true;
-    percentageValue = null;
-
-    updateResult();
-}
-
-function clearCalculator(){
-    currentNumber = "";
-    firstOperand = null;
-    operator = null;
-    updateResult(true);
-}
-
-function setPercentage(){
-    let result = parseFloat(currentNumber) / 100;
-    if(["+","-"].includes(operator)){
-        result = result * (firstOperand || 1);
-    } 
-    if (result.toString().split(".")[1]?.length > 5) {
-        result = result.toFixed(5).toString();
-    }
-    
-    currentNumber = result.toString();
-    updateResult();
-}
-
-buttons.forEach((button) =>{
-    button.addEventListener("click", () => {
-        const buttonText = button.innerText;
-        if (/^[0-9,]+$/.test(buttonText)){
-            addDigit(buttonText);
-        }else if(["+","-","x","&#247;"].includes(buttonText)){
-            setOperator(buttonText);
-        }else if (buttonText === "="){
-            calculete();
-        }else if (buttonText === "AC"){
-            clearCalculator();
-        }else if (buttonText === "+/-"){
-            currentNumber = (
-                parseFloat(currentNumber || firstOperand) * -1
-            ).toString();
-            updateResult();
-        }else if (buttonText === "%"){
-            setPercentage()
+        if (button.classList.contains('bg-gray')) {
+            handleSpecialButtons(value);
+        } else if (button.classList.contains('bg-orange')) {
+            handleOperator(value);
+        } else if (button.classList.contains('ver')) {
+            calculateResult();
+        } else {
+            handleNumberInput(value);
         }
     });
 });
+
+function handleSpecialButtons(value) {
+    if (value === 'AC') {
+        resetCalculator();
+    } else if (value === '+/-') {
+        toggleSign();
+    } else if (value === '%') {
+        applyPercentage();
+    }
+}
+
+function handleOperator(op) {
+    if (operator && !shouldResetInput) {
+        calculateResult();
+    }
+    operator = op;
+    previousInput = currentInput;
+    shouldResetInput = true;
+}
+
+function handleNumberInput(value) {
+    if (currentInput === '0' || shouldResetInput) {
+        currentInput = value;
+        shouldResetInput = false;
+    } else {
+        currentInput += value;
+    }
+    updateDisplay();
+}
+
+function calculateResult() {
+    if (!operator || shouldResetInput) return;
+
+    let prev = parseFloat(previousInput);
+    let curr = parseFloat(currentInput);
+
+    switch (operator) {
+        case '+':
+            currentInput = (prev + curr).toString();
+            break;
+        case '-':
+            currentInput = (prev - curr).toString();
+            break;
+        case 'x':
+            currentInput = (prev * curr).toString();
+            break;
+        case '÷':
+            currentInput = (prev / curr).toString();
+            break;
+        default:
+            return;
+    }
+
+    operator = '';
+    previousInput = '';
+    shouldResetInput = true;
+    updateDisplay();
+}
+
+function updateDisplay() {
+    result.textContent = currentInput;
+}
+
+function resetCalculator() {
+    currentInput = '0';
+    operator = '';
+    previousInput = '';
+    shouldResetInput = false;
+    updateDisplay();
+}
+
+function toggleSign() {
+    currentInput = (parseFloat(currentInput) * -1).toString();
+    updateDisplay();
+}
+
+function applyPercentage() {
+    currentInput = (parseFloat(currentInput) / 100).toString();
+    updateDisplay();
+}
